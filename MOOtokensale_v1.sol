@@ -293,12 +293,12 @@ contract MooTokenSale is Ownable,Sender {
   uint256 public oneCoin;
 
   // start and end block where investments are allowed (both inclusive)
-  uint256 public startTimestamp;
-  uint256 public endTimestamp;
+  uint256 public presale_startTimestamp;
+  uint256 public presale_endTimestamp;
 
   // timestamps for tiers
-  uint256 public tier1Timestamp;
-  uint256 public tier2Timestamp;
+  uint256 public publicsale_startTimestamp;
+  uint256 public publicsale_endTimestamp;
 
   // address where funds are collected
 
@@ -353,11 +353,14 @@ contract MooTokenSale is Ownable,Sender {
   event SaleClosed();
 
   function MooTokenSale() public {
-    startTimestamp = 1509930000; //  Monday November 06, 2017 09:00:00 (am) in time zone Asia/Singapore (SGT)
-    //1508684400;
-    endTimestamp = 1512489599;   //  December 05, 2017 23:59:59 (pm) in time zone Asia/Singapore (SGT) ( GMT +08:00 )
-    tier1Timestamp = 1510102799; //   November 08, 2017 08:59:59 (am) in time zone Asia/Singapore (SGT)
-    tier2Timestamp = 1510361999; //   November 11, 2017 08:59:59 (am) in time zone Asia/Singapore (SGT)
+    presale_startTimestamp =  1516896000;
+        // 1516896000 converts to Friday January 26, 2018 00:00:00 (am) in time zone Asia/Singapore (+08)
+    presale_endTimestamp = 1519358400;
+        // 1519358400 converts to Friday February 23, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08
+    publicsale_startTimestamp = 1519876800;
+        // 1519876800 converts to Thursday March 01, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
+    publicsale_endTimestamp = 1522468800; 
+        // 1522468800 converts to Saturday March 31, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
     multiSig = 0x90420B8aef42F856a0AFB4FFBfaA57405FB190f3;
     token = new MooToken();
     decimals = token.decimals();
@@ -369,17 +372,26 @@ contract MooTokenSale is Ownable,Sender {
   /**
   * @dev Calculates the amount of bonus coins the buyer gets
    */
+
+   /** NEED TO SET IT!!!!!
+
+   ***********************************************************************************
+    */
   function getRateAt(uint256 at) internal constant returns (uint256) {
-    if (at < (tier1Timestamp))
+    if (at < (presale_startTimestamp))
       return 575;
-    if (at < (tier2Timestamp))
+    if (at < (presale_endTimestamp))
+      return 550;
+    if (at < (publicsale_startTimestamp))
+      return 575;
+    if (at < (publicsale_endTimestamp))
       return 550;
     return 500;
   }
 
   // @return true if crowdsale event has ended
   function hasEnded() public constant returns (bool) {
-    if (now > endTimestamp)
+    if (now > publicsale_endTimestamp)
       return true;
     if (tokenRaised >= tokensForSale)
       return true; // if we reach the tokensForSale
@@ -403,7 +415,7 @@ contract MooTokenSale is Ownable,Sender {
   */
   modifier onlyAuthorised() {
     require (authorised[msg.sender] || freeForAll);
-    require (now >= startTimestamp);
+    require (now >= presale_startTimestamp);
     require (!(hasEnded()));
     require (multiSig != 0x0);
     require (msg.value > 1 finney);
