@@ -4,9 +4,7 @@ Opening time:
  
     presale startTime =  1516896000;
         // 1516896000 converts to Friday January 26, 2018 00:00:00 (am) in time zone Asia/Singapore (+08)
-    presale endTime = 1519358400;
-        // 1519358400 converts to Friday February 23, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08
-    publicsale startTime = 1519876800;
+    publicsale startTime = presale endTime = 1519876800;
         // 1519876800 converts to Thursday March 01, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
     publicsale endTime = 1522468800; 
         // 1522468800 converts to Saturday March 31, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
