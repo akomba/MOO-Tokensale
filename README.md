@@ -35,7 +35,7 @@ Opening time:
 
 * by Admin user or cs user 
 * can approve or block
-* call authosiseaccount / authoriseManyAccounts / blockAccount
+* call `authoriseAccount()` / `authoriseManyAccounts()` / `blockAccount()`
 
 ## changable Rate 
 
@@ -43,7 +43,7 @@ Opening time:
 * by Admin user
 * take care the rate set the bonus: only without reminder!
 * basic rate = 2800 
-* call setRate with the new Rate
+* call `setRate()` with the new Rate
 
 ************************************
 *     NEW PART OF THE CONTRACT     *
@@ -54,14 +54,14 @@ Opening time:
 * dont passes control of token back to the owner
 * startTrading ( called from the contract)
 * minting the unsold tokens 
-* call finishSale() 
+* call `finishSale()` 
 
 ## Minting after the sale 
 
 * by Admin User
 * if the sale is end
 * till reach the maxTokens minus reserved amount of Team and Advisors
-* call afterSaleMinting with the number of tokens
+* call `afterSaleMinting()` with the number of tokens
 
 ## Minting tokens for Team and Advisors
 
@@ -69,7 +69,7 @@ Opening time:
 * only during the given Period ( 31.Aug .2018 / 24h)
 * only once can call
 * if the Admin never call it, the reserved tokens would be minted in CLOSE phase
-* call mintToTeamAndAdvisors()
+* call `mintToTeamAndAdvisors()`
 
 ## Closing the process (owner)
 
@@ -77,7 +77,7 @@ Opening time:
 * minting every missing tokens to maxTokens
 * passes control of token back to the owner
 * finish the minting
-* call close()
+* call `close()`
 
 
 
