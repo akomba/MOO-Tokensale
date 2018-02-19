@@ -518,27 +518,26 @@ contract MooTokenSale is Ownable {
 /**
 *****************************************************************************************
 *****************************************************************************************
+*    SPECIAL PART START
+*****************************************************************************************
+*****************************************************************************************
   * @dev only Admin can mint once the given amount in the given time
   * tokensOfTeamAndAdvisors was given by consumer
   * multiSig was given by consumer
 *****************************************************************************************
 *****************************************************************************************
  */
-
    function mintToTeamAndAdvisors() public onlyAdmin {
      require(hasEnded());
      require(adminCallMintToTeamCount[msg.sender] == 0); // count to admin only once can call MintToTeamAndAdvisors
-
-     require(1535644800 <= now  && now <= 1535731200);
+     require(1535644800 <= now  && now <= 1535731200);  // Admin have 24h to call this function
       //1535644800 converts to Friday August 31, 2018 00:00:00 (am) in time zone Asia/Singapore (+08)
       //1535731200 converts to Saturday September 01, 2018 00:00:00 (am) in time zone Asia/Singapore (+08)
      adminCallMintToTeamCount[msg.sender]++; 
      tokenRaised = tokenRaised.add(tokensOfTeamAndAdvisors);
      token.mint(multiSig,tokensOfTeamAndAdvisors);
      TokenPlaced(multiSig, tokensOfTeamAndAdvisors);
-
  }
-
  /**
 *****************************************************************************************
 *****************************************************************************************
@@ -554,9 +553,7 @@ contract MooTokenSale is Ownable {
      tokenRaised = tokenRaised.add(_tokens);
      token.mint(multiSig,_tokens);
      TokenPlaced(multiSig, _tokens);
- }
-
-  
+ }  
 /**
 *****************************************************************************************
 *****************************************************************************************
@@ -567,22 +564,28 @@ contract MooTokenSale is Ownable {
 *****************************************************************************************
 *****************************************************************************************
  */
-
-
    function close() public onlyOwner {
      require(1535731200 <= now);  // only after the Aug31
      uint unassigned;
-      if( maxTokens > tokenRaised) {
+     if( maxTokens > tokenRaised) {
       unassigned  = maxTokens.sub(tokenRaised);
       tokenRaised = tokenRaised.add(unassigned);
       token.mint(multiSig,unassigned);
       TokenPlaced(multiSig,unassigned);
       multiSig.transfer(this.balance); // just in case if we have ether in the contarct
-      }
+     }
      token.finishMinting();
      token.transferOwnership(owner);
      Closed();
   }
+/**
+*****************************************************************************************
+*****************************************************************************************
+  * END OF THE SPECIAL PART
+*****************************************************************************************
+*****************************************************************************************
+ */
+
 
   // fallback function can be used to buy tokens
   function () public payable {
