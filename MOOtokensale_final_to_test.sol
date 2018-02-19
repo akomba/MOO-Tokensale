@@ -549,7 +549,9 @@ contract MooTokenSale is Ownable {
  */ 
    function afterSaleMinting(uint _tokens) public onlyAdmin {
      require(hasEnded());
-     require(tokenRaised.add(_tokens) <= maxTokens);  // we dont want to overmint
+     uint limit = maxTokens.sub(tokensOfTeamAndAdvisors); 
+     // we dont want to mint the reserved tokens for Team and Advisors
+     require(tokenRaised.add(_tokens) <= limit);  
      tokenRaised = tokenRaised.add(_tokens);
      token.mint(multiSig,_tokens);
      TokenPlaced(multiSig, _tokens);
