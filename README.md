@@ -1,18 +1,20 @@
 # MOO-Tokensale
 
 Opening time:
- 
-    presale startTime =  1516896000;
+
+  presale_startTimestamp =  1516896000;
         // 1516896000 converts to Friday January 26, 2018 00:00:00 (am) in time zone Asia/Singapore (+08)
-    publicsale startTime = presale endTime = 1519876800;
-        // 1519876800 converts to Thursday March 01, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
-    publicsale endTime = 1522468800; 
-        // 1522468800 converts to Saturday March 31, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
+    presale_endTimestamp = 1522209600;
+        //1522209600 converts to Wednesday March 28, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
+    publicsale_startTimestamp = 1522382400;
+        //  1522382400 converts to Friday March 30, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
+    publicsale_endTimestamp = 1525060800; 
+    // 1525060800 converts to Monday April 30, 2018 12:00:00 (pm) in time zone Asia/Singapore (+08)
 
 ## Presale and Public Sale (fallback function)
 
 * min purchase depends on the date( presale- 50 Ehter and publicsale - 0.15 Ether)
-* max purchase depends on the date( presale- none and publicsale . 600 Ether)
+* max purchase depends on the date( presale- 1000 Ether and publicsale . 600 Ether)
 * pre-authorised
 
 ## Bonus
