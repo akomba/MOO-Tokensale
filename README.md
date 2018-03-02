@@ -81,6 +81,16 @@ Opening time:
 * finish the minting
 * call `close()`
 
+############## update ####################
+
+* time update
+* presale new limit :  maxcontribution = 1000 ether 
+
+* use the new standardToken with increase-, and decreaseApproval
+* use serious limit in placeToken() and buyToken() functions and we can't overmint the tokens
+* we dont solve the fairly allocate the last few tokens, 
+so you need to call the functions with the expected amount of tokens or ether to reach the tokensForSale)
+
 
 
 
