@@ -15,6 +15,7 @@ Opening time:
 
 * min purchase depends on the date( presale- 50 Ehter and publicsale - 0.15 Ether)
 * max purchase depends on the date( presale- 1000 Ether and publicsale . 600 Ether)
+* max tokens what a buyer can buy default is = max contributon * bacis rate , the Admin can set this value to call `setMaxTokenCap()`
 * pre-authorised
 
 ## Bonus
@@ -90,6 +91,9 @@ Opening time:
 * use serious limit in placeToken() and buyToken() functions and we can't overmint the tokens
 * we dont solve the fairly allocate the last few tokens, 
 so you need to call the functions with the expected amount of tokens or ether to reach the tokensForSale)
+* get the limit of tokens what a buyer can buy : maxTokenCap
+
+
 
 
 
