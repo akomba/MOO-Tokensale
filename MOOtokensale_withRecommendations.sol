@@ -31,7 +31,9 @@ contract Ownable {
    * @param newOwner The address to transfer ownership to.
    */
   function transferOwnership(address newOwner) public onlyOwner returns (bool) {
-    require (newOwner != address(0) || newOwner != address(this) || newOwner != owner);
+    require(newOwner != address(0));
+    require(newOwner != address(this));
+    require(newOwner != owner);  
     OwnershipTransferred(owner, newOwner);
     owner = newOwner;
     return true;
@@ -61,7 +63,9 @@ contract Claimable is Ownable {
    * @param newOwner The address to transfer ownership to.
    */
   function transferOwnership(address newOwner) onlyOwner public returns (bool){
-    require (newOwner != address(0) || newOwner != address(this) || newOwner != owner);
+    require (newOwner != address(0));
+    require (newOwner != address(this));
+    require (newOwner != owner); 
     pendingOwner = newOwner;
     OwnershipTransferInitiated(pendingOwner); 
     return true;
@@ -534,7 +538,8 @@ contract MooTokenSale is Ownable {
   * @dev authorise an account to participate
   */
   function authoriseAccount(address whom) onlyCSorAdmin public returns(bool) {
-    require(whom != address(0) || whom != address(this));
+    require(whom != address(0));
+    require(whom != address(this));
     authorised[whom] = true;
     AuthoriseStatusUpdated(whom, true);
     return true;
@@ -546,7 +551,8 @@ contract MooTokenSale is Ownable {
   function authoriseManyAccounts(address[] many) onlyCSorAdmin public returns(bool) {
     require(many.length > 0);  
     for (uint256 i = 0; i < many.length; i++) {
-      require(many[i] != address(0) || many[i] != address(this));  
+      require(many[i] != address(0));
+      require(many[i] != address(this));  
       authorised[many[i]] = true;
       AuthoriseStatusUpdatedMany(many, true);
       return true;
@@ -557,7 +563,8 @@ contract MooTokenSale is Ownable {
   * @dev ban an account from participation (default)
   */
   function blockAccount(address whom) onlyCSorAdmin public returns(bool){
-    require(whom != address(0) || whom != address(this));
+    require(whom != address(0))
+    require(whom != address(this));
     authorised[whom] = false;
     AuthoriseStatusUpdated(whom, false);
     return true;
@@ -567,7 +574,9 @@ contract MooTokenSale is Ownable {
   * @dev set a new CS representative
   */
   function setCS(address newCS) onlyOwner public returns (bool){
-    require(newCS != address(0) || newCS != address(this) || newCS != owner);  
+    require(newCS != address(0));
+    require(newCS != address(this));
+    require(newCS != owner);  
     cs = newCS;
     CsUpdated(newCS);
     return true;
@@ -577,7 +586,9 @@ contract MooTokenSale is Ownable {
   * @dev set a new Admin representative
   */
   function setAdmin(address newAdmin) onlyOwner public returns (bool) {
-     require(newAdmin != address(0) || newAdmin != address(this) || newAdmin != owner); 
+    require(newAdmin != address(0));
+    require(newAdmin != address(this));
+    require(newAdmin != owner);  
      Admin = newAdmin;
      AdminUpdated(newAdmin);
      return true;
