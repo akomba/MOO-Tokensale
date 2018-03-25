@@ -610,7 +610,7 @@ contract MooTokenSale is Ownable {
     }
 
     function setMaxTokenCap(uint _newMaxTokenCap) onlyAdmin public returns (bool){
-        require(0 < _newMaxTokenCap && _newMaxTokenCap < 50000);
+        require(0 < _newMaxTokenCap && _newMaxTokenCap < tokensForSale);
         maxTokenCap = _newMaxTokenCap;
         return true;
     }
