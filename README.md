@@ -90,8 +90,12 @@ Opening time:
 * use the new standardToken with increase-, and decreaseApproval
 * use serious limit in placeToken() and buyToken() functions and we can't overmint the tokens
 * we dont solve the fairly allocate the last few tokens, 
-so you need to call the functions with the expected amount of tokens or ether to reach the tokensForSale)
-* get the limit of tokens what a buyer can buy : maxTokenCap
+(so you need to call the functions with the expected amount of tokens or ether to reach the tokensForSale)
+* get the limit of tokens what a buyer can buy : maxTokenCap 
+/ default maxTokenCap = basicRate * maxContribution
+/ the Admin can set maxToeknCap by use `setMaxTokenCap()`, 0 - tokensForsale
+* suspend and resume function to pause the purchasing. Only Admin can call `suspend()` or `resume()` 
+
 
 
 
