@@ -436,7 +436,6 @@ contract MooTokenSale is Ownable {
     event AdminUpdated(address newAdminAddress);
     event CsUpdated(address newCSAddress);
     event EmergencyERC20DrainWasCalled();
-    event AuthoriseStatusUpdatedMany(address[] accounts,bool status);
     event AuthoriseStatusUpdated(address accounts, bool status);
     event SaleResumed();
     event SaleSuspended();
@@ -458,11 +457,10 @@ contract MooTokenSale is Ownable {
         decimals = token.decimals();
         oneCoin = 10 ** decimals;
         maxTokens = 500 * (10**6) * oneCoin;
-        tokensForSale = 234847984 * oneCoin; // 234 847 984 
-        tokensForPreSale = 60210949 * oneCoin; // 60 210 949
+        tokensForSale = 200260050 * oneCoin; // 200 260 050
         basicRate = 1800;
         rate = basicRate;
-        tokensOfTeamAndAdvisors = 65152016 * oneCoin;  // it was missing the onecoin , 65 152 016
+        tokensOfTeamAndAdvisors = 99739950 * oneCoin;  // it was missing the onecoin , 99 739 950
         maxTokenCap = basicRate * maxContribution; 
         suspended = false;
     }
@@ -563,9 +561,10 @@ contract MooTokenSale is Ownable {
             require(many[i] != address(0));
             require(many[i] != address(this));  
             authorised[many[i]] = true;
-            AuthoriseStatusUpdatedMany(many, true);
-            return true;
+            AuthoriseStatusUpdated(many[i], true);
         }
+        return true;
+            
     }
 
   /**
@@ -665,29 +664,25 @@ contract MooTokenSale is Ownable {
   // low level token purchase function
     function buyTokens(address beneficiary, uint256 amount) onlyAuthorised internal returns (bool){
       
-        uint256 tokens;
-    // check we are in pre sale , bonus 25%
+      // check we are in pre sale , bonus 25%
         if (currentTime() <= PRESALE_ENDTIMESTAMP) {
             rate = basicRate * 5/4;
             minContribution = 50 ether;
             maxContribution = 1000 ether;
-        // Calculate token amount to be purchased    
-            tokens = amount.mul(rate);
-            require(tokenRaised.add(tokens) <= tokensForPreSale);
-            
     // we are in publicsale bonus depends on the sold out tokens. we set the rate in the setTier
     } else {
             setTier(basicRate);
             minContribution = 0.15 ether;
             maxContribution = 600 ether;
-        // Calculate token amount to be purchased    
-            tokens = amount.mul(rate);
         }
 
     //check minimum and maximum amount
         require(msg.value >= minContribution);
         require(msg.value <= maxContribution);
     
+    // Calculate token amount to be purchased    
+        uint256 tokens = amount.mul(rate);
+   
    
     // *************************************************************************************************************
         require(tokenRaised.add(tokens) <= tokensForSale); //if dont want to overmint ******************************
