@@ -42,47 +42,6 @@ contract Ownable {
 }
 
 /**
- * @title Claimable
- * @dev Extension for the Ownable contract, where the ownership needs to be claimed.
- * This allows the new owner to accept the transfer.
- */
-contract Claimable is Ownable {
-    address public pendingOwner;
-    event OwnershipTransferInitiated(address indexed _pendingOwner);
-
-  /**
-   * @dev Modifier throws if called by any account other than the pendingOwner.
-   */
-    modifier onlyPendingOwner() {
-        require(msg.sender == pendingOwner);
-        _;
-    }
-
-  /**
-   * @dev Allows the current owner to set the pendingOwner address.
-   * @param newOwner The address to transfer ownership to.
-   */
-    function transferOwnership(address newOwner) onlyOwner public returns (bool){
-        require (newOwner != address(0));
-        require (newOwner != address(this));
-        require (newOwner != owner); 
-        pendingOwner = newOwner;
-        OwnershipTransferInitiated(pendingOwner); 
-        return true;
-    }
-
-  /**
-   * @dev Allows the pendingOwner address to finalize the transfer.
-   */
-    function claimOwnership() onlyPendingOwner public returns (bool) {
-        owner = pendingOwner;
-        pendingOwner = address(0);
-        OwnershipTransferred(owner, pendingOwner);
-        return true;
-    }
-}
-
-/**
  * @title ERC20Basic
  * @dev Simpler version of ERC20 interface
  * @dev see https://github.com/ethereum/EIPs/issues/179
@@ -308,7 +267,7 @@ contract MooToken is MintableToken {
     string public symbol = "XMOO";
     uint256 public decimals = 18;
 
-    event EmergencyERC20DrainWasCalled();
+    event EmergencyERC20DrainWasCalled(address tokenaddress, uint256 _amount);
 
   // Special propeties
     bool public tradingStarted = false;
@@ -351,7 +310,7 @@ contract MooToken is MintableToken {
 
     function emergencyERC20Drain( ERC20 oddToken, uint amount ) public onlyOwner returns(bool){
         oddToken.transfer(owner, amount);
-        EmergencyERC20DrainWasCalled();
+        EmergencyERC20DrainWasCalled(oddToken, amount);
         return true;
     }
 
@@ -386,6 +345,7 @@ contract MooTokenSale is Ownable {
 
     function setWallet(address _newWallet) public onlyOwner returns (bool) {
         multiSig = _newWallet;
+        WalletUpdated(_newWallet);
         return true;
     } 
 
@@ -435,10 +395,11 @@ contract MooTokenSale is Ownable {
     event Closed();
     event AdminUpdated(address newAdminAddress);
     event CsUpdated(address newCSAddress);
-    event EmergencyERC20DrainWasCalled();
+    event EmergencyERC20DrainWasCalled(address tokenaddress, uint256 _amount);
     event AuthoriseStatusUpdated(address accounts, bool status);
     event SaleResumed();
     event SaleSuspended();
+    event WalletUpdated(address newwallet);
    
 
     function MooTokenSale() public {
@@ -805,7 +766,7 @@ contract MooTokenSale is Ownable {
   // emergency if the contarct get ERC20 tokens
     function emergencyERC20Drain( ERC20 oddToken, uint amount ) public onlyCSorAdmin returns(bool){
         oddToken.transfer(owner, amount);
-        EmergencyERC20DrainWasCalled();
+        EmergencyERC20DrainWasCalled(oddToken, amount);
         return true;
     }
 
