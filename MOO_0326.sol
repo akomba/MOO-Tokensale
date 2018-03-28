@@ -406,7 +406,7 @@ contract MooTokenSale is Ownable {
   // maximum amount of tokens for sale
     uint256 public tokensForSale;  
   // maximum amount of tokens for presale
-    uint256 public tokensForPreSale; 
+  // uint256 public tokensForPreSale; 
 
   // number of participants in presale
     uint256 public numberOfContributors = 0;
@@ -461,7 +461,7 @@ contract MooTokenSale is Ownable {
         basicRate = 1800;
         rate = basicRate;
         tokensOfTeamAndAdvisors = 99739950 * oneCoin;  // it was missing the onecoin , 99 739 950
-        maxTokenCap = basicRate * maxContribution; 
+        maxTokenCap = basicRate * maxContribution * 11/10;
         suspended = false;
     }
 
@@ -470,21 +470,26 @@ contract MooTokenSale is Ownable {
         return now;
     }
 
-  /**
-  * @dev Calculates the rate with bonus in the publis sale
+    /**
+    * @dev Calculates the rate with bonus in the publis sale
     */
-    function setTier(uint _basicRate) internal {
+    function getCurrentRate() public view returns (uint256) {
     
+        if (currentTime() <= PRESALE_ENDTIMESTAMP) {
+            return basicRate * 5/4;
+        }
+
         if (tokenRaised <= 10000000 * oneCoin) {
-            rate = _basicRate * 11/10;
+            return basicRate * 11/10;
     } else if (tokenRaised <= 20000000 * oneCoin) {
-        rate = _basicRate * 1075/1000;
+        return basicRate * 1075/1000;
     } else if (tokenRaised <= 30000000 * oneCoin) {
-        rate = _basicRate * 105/100;
+        return basicRate * 105/100;
     } else {
-        rate = _basicRate;
+        return basicRate ;
     }
     }
+
 
   // @return true if crowdsale event has ended
     function hasEnded() public constant returns (bool) {
@@ -563,8 +568,7 @@ contract MooTokenSale is Ownable {
             authorised[many[i]] = true;
             AuthoriseStatusUpdated(many[i], true);
         }
-        return true;
-            
+        return true;            
     }
 
   /**
@@ -664,16 +668,15 @@ contract MooTokenSale is Ownable {
   // low level token purchase function
     function buyTokens(address beneficiary, uint256 amount) onlyAuthorised internal returns (bool){
       
+        rate = getCurrentRate();
       // check we are in pre sale , bonus 25%
         if (currentTime() <= PRESALE_ENDTIMESTAMP) {
-            rate = basicRate * 5/4;
             minContribution = 50 ether;
             maxContribution = 1000 ether;
     // we are in publicsale bonus depends on the sold out tokens. we set the rate in the setTier
     } else {
-            setTier(basicRate);
-            minContribution = 0.15 ether;
-            maxContribution = 600 ether;
+            minContribution = 0.2 ether;
+            maxContribution = 20 ether;
         }
 
     //check minimum and maximum amount
@@ -806,9 +809,6 @@ contract MooTokenSale is Ownable {
         return true;
     }
 
-    function getCurrentRate() public view returns (uint256 _rate) {
-        return rate;
-    }
 }
 
 
