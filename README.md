@@ -13,9 +13,9 @@ Opening time:
 
 ## Presale and Public Sale (fallback function)
 
-* min purchase depends on the date( presale- 50 Ehter and publicsale - 0.15 Ether)
-* max purchase depends on the date( presale- 1000 Ether and publicsale . 600 Ether)
-* max tokens what a buyer can buy default is = max contributon * bacis rate , the Admin can set this value to call `setMaxTokenCap()`
+* min purchase depends on the date( presale- 50 Ehter and publicsale - 0.2 Ether)
+* max purchase depends on the date( presale- 1000 Ether and publicsale - 20 Ether)
+* max tokens what a buyer can buy default is = max contributon * bacis rate * 11/10 , the Admin can set this value to call `setMaxTokenCap()`
 * pre-authorised
 
 ## Bonus
